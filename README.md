@@ -48,6 +48,25 @@ theme:
   gauge_color: '#cece68'
   gauge_border_color: '#abcc7e'
   gauge_label_color: '#fa4d70'
+
+bindings:
+  exit: 'q' 
+  move_select_top: 'g'
+  move_select_bottom: 'G'
+  move_select_down: 'j'
+  move_select_down_tab: 'J'
+  move_select_up: 'k'
+  move_select_up_tab: 'K'
+  next_page: 'n'
+  previous_page: 'N'
+  open_folder: 'l'
+  previous_folder: 'h'
+  add_music_to_list: 'Enter'
+  start_and_pause: ' '
+  volume_down: '-'
+  volume_up: '='
+  search_mode: 's'
+  command_mode: ':'
 ```
 
 ## Usage
@@ -68,7 +87,7 @@ theme:
 | Open folder                  | l                      |
 | Back to the previous folder  | h                      |
 | Enter command mode           | :                      |
-| Enter search mode            | \|                     |
+| Enter search mode            | s                      |
 | Exit search or command mode  | \<Esc>                 |
 | Pause or resume              | \<Space>               |
 | Increase the volume          | + \| =                 |

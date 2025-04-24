@@ -9,6 +9,7 @@ use rodio::OutputStream;
 use tui::backend::CrosstermBackend;
 use tui::Terminal;
 use view::handle_theme;
+use view::handle_bindings;
 
 mod app;
 mod commands;
@@ -22,6 +23,7 @@ mod view;
 fn main() -> Result<(), ExitFailure> {
     let init_config = config::init()?;
     let theme = handle_theme(init_config.theme);
+    let bindings = handle_bindings(init_config.bindings);
 
     // Initialize terminal
     enable_raw_mode()?;
@@ -40,7 +42,7 @@ fn main() -> Result<(), ExitFailure> {
         view::draw(&mut app, &theme)?;
 
         if crossterm::event::poll(Duration::from_millis(100))? {
-            if !handle_event(&mut app, &init_config.music_database)? {
+            if !handle_event(&mut app, &init_config.music_database, &bindings)? { 
                 break;
             };
         }

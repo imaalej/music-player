@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 pub struct InitConfig {
     pub music_database: String,
     pub theme: InitTheme,
+    pub bindings: InitBindings,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -41,6 +42,29 @@ pub struct InitTheme {
     pub gauge_color: String,
     pub gauge_border_color: String,
     pub gauge_label_color: String,
+
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct InitBindings {
+    pub exit: String,
+    pub move_select_top: String,
+    pub move_select_bottom: String,
+    pub move_select_down: String,
+    pub move_select_down_tab: String,
+    pub move_select_up: String,
+    pub move_select_up_tab: String,
+    pub next_page: String,
+    pub previous_page: String,
+    pub open_folder: String,
+    pub previous_folder: String,
+    pub add_music_to_list: String,
+    pub start_and_pause: String,
+    pub volume_down: String,
+    pub volume_up: String,
+    pub search_mode: String,
+    pub command_mode: String,
+
 }
 
 pub fn init() -> Result<InitConfig, ExitFailure> {
