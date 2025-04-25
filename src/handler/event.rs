@@ -35,7 +35,7 @@ pub fn handle_event(app: &mut App, music_database: &str, bindings: &Bindings) ->
                 code if code == bindings.volume_down => app.update_volume(&|v| if v > 0.0 {v - 0.05} else {0.0}),
                 code if code == bindings.volume_up => app.update_volume(&|v| if v < 1.25 {v + 0.05} else {1.25}),
                 KeyCode::Char('+') => app.update_volume(&|v| if v < 1.25 {v + 0.05} else {1.25}),
-                code if code == bindings.search_mode => app.set_mode(Mode::Search),
+                //code if code == bindings.search_mode => app.set_mode(Mode::Search),
                 code if code == bindings.command_mode => app.set_mode(Mode::Command),
                 KeyCode::Esc => {
                     app.populate_files()?;
@@ -47,20 +47,28 @@ pub fn handle_event(app: &mut App, music_database: &str, bindings: &Bindings) ->
 
         if app.mode == Mode::Search {
             match key.code {
-                KeyCode::Char(chr) => app.add_to_search_buffer(chr),
-                KeyCode::Enter => app.execute_search(),
+                KeyCode::Char(chr) => {
+                    app.add_to_search_buffer(chr);
+                    app.execute_search();  // Trigger immediately after typing
+                },
                 KeyCode::Backspace => {
-                    if app.search_buffer.len() > 1 {
+                    if !app.search_buffer.is_empty() {
                         app.search_buffer.truncate(app.search_buffer.len() - 1);
-                    };
-                }
+                        app.execute_search();  // Trigger immediately after deletion
+                    }
+                },
                 KeyCode::Esc => {
-                    app.set_mode(app::Mode::Browse);
+                    app.set_mode(Mode::Browse);
+                    app.search_buffer.clear();
                     app.search_buffer = Vec::new();
-                }
+                },
                 _ => {}
             }
-        }
+        } else if key.code == bindings.search_mode {
+            app.set_mode(Mode::Search);
+            app.search_buffer.clear();
+            app.add_to_search_buffer(':');
+        } 
 
         if app.mode == app::Mode::Command {
             match key.code {

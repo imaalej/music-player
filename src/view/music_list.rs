@@ -126,12 +126,16 @@ fn draw_search<B: Backend>(frame: &mut Frame<B>, area: Rect, theme: &Theme, sear
         Span::styled("  ", Style::default().fg(theme.search_icon_color)),
         Span::styled(search_string, Style::default().fg(theme.search_font_color)),
     ]));
-    let search = Paragraph::new(text).block(
-        Block::default()
-            .borders(Borders::ALL)
-            .border_type(BorderType::Rounded)
-            .style(Style::default().fg(theme.search_border_color)),
-    );
+    let mut block = Block::default()
+    .borders(Borders::ALL)
+    .border_type(BorderType::Rounded)
+    .style(Style::default().fg(theme.search_border_color));
+
+    if !search_string.is_empty() {
+        block = block.title(" Search ");
+    }
+
+    let search = Paragraph::new(text).block(block);
     frame.render_widget(search, area);
 }
 

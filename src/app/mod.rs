@@ -403,13 +403,17 @@ impl<'a> App<'a> {
     }
 
     pub fn execute_search(&mut self) {
-        let mut astrict = self.get_search_string();
-        if astrict.len() > 0 {
-            astrict.remove(0);
-        }
-        self.mode = Mode::Browse;
-        match self.populate_search_file(&astrict) {
-            Ok(_) => {}
+        let search_term = self.get_search_string();
+        
+        // Strip the first character if it exists (e.g., '/' or '?')
+        let actual_term = if !search_term.is_empty() {
+            &search_term[1..]
+        } else {
+            &search_term[..]
+        };
+    
+        match self.populate_search_file(actual_term) {
+            Ok(_) => {},
             Err(err) => self.error = Some(err.to_string()),
         };
     }
