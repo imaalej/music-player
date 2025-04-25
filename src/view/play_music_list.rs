@@ -29,7 +29,7 @@ const USAGE: &[&str] = &[
     "Previous page                  ", "[N]    ", " ",
     "Open folder                    ", "[l]    ", " ",
     "Back to previous folder        ", "[h]    ", " ",
-    "Enter search mode              ", "[|]    ", " ",
+    "Enter search mode              ", "[s]    ", " ",
     "Enter command mode             ", "[:]    ", " ",
     "Exit program                   ", "[q]    ", " ",
     "Exit search or command mode    ", "[Esc]  ", " ",
