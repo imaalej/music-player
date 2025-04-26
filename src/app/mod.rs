@@ -245,7 +245,12 @@ impl<'a> App<'a> {
     pub fn open_folder(&mut self) {
         if let Some(selection_index) = self.selection_index {
             match &self.directory_contents[selection_index] {
-                DirectoryItem::File(_) => {} //Play song!
+                DirectoryItem::File(_) => {
+                    self.add_music_to_list();
+                    if let Some(error) = &self.error {
+                        self.error = Some(error.to_string());
+                    }
+                }
                 DirectoryItem::Directory(path) => {
                     let previous_dir = self.current_directory.clone();
                     self.current_directory.push(path);
