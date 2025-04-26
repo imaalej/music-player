@@ -39,8 +39,10 @@ pub struct App<'a> {
     pub player: Sink,
     pub mode: Mode,
     pub play_style: PlayStyle,
+    pub position_history: Vec<Option<usize>>,
 
     max_file_selection: usize,
+    
 }
 
 impl<'a> App<'a> {
@@ -70,6 +72,7 @@ impl<'a> App<'a> {
             mode: Mode::Browse,
             play_style: PlayStyle::PlayOrder,
             max_file_selection: 0,
+            position_history: Vec::new(),
         };
 
         app.populate_files()?;
@@ -242,13 +245,15 @@ impl<'a> App<'a> {
     pub fn open_folder(&mut self) {
         if let Some(selection_index) = self.selection_index {
             match &self.directory_contents[selection_index] {
-                DirectoryItem::File(_) => {}
+                DirectoryItem::File(_) => {} //Play song!
                 DirectoryItem::Directory(path) => {
                     let previous_dir = self.current_directory.clone();
                     self.current_directory.push(path);
+                    self.position_history.push(self.selection_index);
                     if let Err(err) = self.populate_files() {
                         self.current_directory = previous_dir;
                         self.error = Some(err.to_string());
+                        self.position_history.pop();
                     } else {
                         if self.max_file_selection == 0 {
                             self.selection_index = None;
@@ -276,6 +281,8 @@ impl<'a> App<'a> {
                 } else {
                     if self.max_file_selection == 0 {
                         self.selection_index = None;
+                    } else if let Some(previous_position) = self.position_history.pop() {
+                        self.selection_index = previous_position;
                     } else {
                         self.selection_index = Some(0);
                     }
